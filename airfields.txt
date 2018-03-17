@@ -1,0 +1,6 @@
+CLD|Culdrose_Airfield|50.0966054|-5.2662555|Airfield
+BRT|Burnford_Common|50.588019|-4.161587
+BEM|Bembridge_Airfield|50.6802|-1.08452
+NHL|North_Hill_Airfield|50.8544958|-3.2610979
+RIN|Kitson_Field|50.9118301|0.1066544
+PAR|Parham_Airfield|50.9209142|-0.4778512
