@@ -30,7 +30,7 @@ you need to change anything it is probably here.
 (2) The file build_rpfd_data.sh is the main script that does a single
 pass on one model for one day. A quick read of the file shows that it will
 read in the rpfd.ini parameters, check files, check the input model (e.g. 
-UK12) and then run the rpfd4.php file that will then runs the cgi and perl
+UK12) and then run the rpfd5.php file that will then runs the cgi and perl
 script to create a data file (ending .dat) in the OUT folder.
 
 (3) The LOG folder contains a log file as things progress. Results are
@@ -47,11 +47,11 @@ put somewhere where it can see the output PNG files and also the LOG and OUT
 directory.
 
 (7) Locations to be used is in the airfields.txt file, referred to in the 
-rpfs.ini file, but you can add or edit your own. The format is in the file.
+rpfd.ini file, but you can add or edit your own. The format is in the file.
 
 What needs to be configured?
 ----------------------------
-(a) The cgi file needs to be edited for your rasp data file locations:
+(a) The cgi file needs to be edited for your rasp data file locations, example below:
 
 	### SET EXTERNAL SCRIPT WHICH OUTPUTS RESULT IN TEXT FORMAT
 	$EXTRACTSCRIPT = "/home/rasp3/build/maxdist.0.2/maxdistraspstarttimexml.PL";
@@ -74,4 +74,4 @@ the log file.
 
 By all means reach out to darren@btinternet.com if needed and good luck!
 
-Darren - 27-2-2018
+Darren
