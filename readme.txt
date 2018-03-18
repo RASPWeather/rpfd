@@ -6,12 +6,16 @@ Perquisites
 1. NCL 6.4.0 - 6.4.0 needs is for the spatial plotting command
 2. Working perl environment for the perl script and CGI
 3. Working php - 5 may work, but this was developed under PHP 7.0.25
+4. A working RASP implementation to create WRF-generated source data
 
 The scripts are not meant to be used as from a web server, but do need 
 to be run from the command line - preferably as a cron job.
 
 The scripts and code have comments to help, but you should be capable of 
 debugging these if your environment differs a lot.
+
+You will need a working RASP implementation which you can find instructions
+via here: http://www.drjack.info/RASP/
 
 How It Works
 ------------
