@@ -1,0 +1,20 @@
+#Use these as a guide to run the tooling via a cron job - the exact timings will depend
+# on your system and when data is ready.
+RPFDPATH=<where it all lives>/rpfd
+00 06 * * * $RPFDPATH/build_rpfd_data.sh uk12 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12.err
+00 06 * * * $RPFDPATH/build_rpfd_data.sh uk12+1 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+1.err
+30 07 * * * $RPFDPATH/build_rpfd_data.sh uk12+2 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+2.err
+45 07 * * * $RPFDPATH/build_rpfd_data.sh uk12+3 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+3.err
+00 08 * * * $RPFDPATH/build_rpfd_data.sh uk12+4 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+4.err
+15 08 * * * $RPFDPATH/build_rpfd_data.sh uk12+5 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+5.err
+30 08 * * * $RPFDPATH/build_rpfd_data.sh uk12+6 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+6.err
+#
+#afternoon reruns ... ok evening really
+30 17 * * * $RPFDPATH/build_rpfd_data.sh uk12+1 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+1.err
+40 18 * * * $RPFDPATH/build_rpfd_data.sh uk12+2 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+2.err
+45 20 * * * $RPFDPATH/build_rpfd_data.sh uk12+3 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+3.err
+00 21 * * * $RPFDPATH/build_rpfd_data.sh uk12+4 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+4.err
+15 21 * * * $RPFDPATH/build_rpfd_data.sh uk12+5 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+5.err
+30 21 * * * $RPFDPATH/build_rpfd_data.sh uk12+6 2> $RPFDPATH/LOG/build_rpfd_data.sh.uk12+6.err
+# Take daily archive before the new runs tomorrow
+56 14 * * * $RPFDPATH/archive.sh > $RPFDPATH/archive.log.txt
