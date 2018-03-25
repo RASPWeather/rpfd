@@ -1,6 +1,6 @@
 <?php
 	# rpfd5.php
-	date_default_timezone_set('UTC');
+	date_default_timezone_set('Europe/London');
 
 	// pull in the utilities ... don't use any though until we have parsed the INI file
 	require_once "rpfd_utils.php";
