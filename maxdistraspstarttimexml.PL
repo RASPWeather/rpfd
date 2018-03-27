@@ -1099,7 +1099,7 @@ if( $DoneHeader == 0) {
         ### note: array @paramwarning gives parameters missing, but currently not printed
         if( $#paramwarning > -1 )
 #PAULS        {  $warningfooter .= sprintf " data unavailable after %s so assumed constant then\n", $filetimelist{$paramwarning[0]}[$posttimeindex{$paramwarning[0]}],  $filetimelist{$paramwarning[0]}[$posttimeindex{$paramwarning[0]}] ;}
-        {  $warningfooter = sprintf " data unavailable after %s so assumed constant then", $filetimelist{$paramwarning[0]}[$posttimeindex{$paramwarning[0]}],  $filetimelist{$paramwarning[0]}[$posttimeindex{$paramwarning[0]}] ;}
+        {  $warningfooter = sprintf " data unavailable after %s so assumed constant then", $filetimelist{$paramwarning[0]}[$posttimeindex{$paramwarning[0]}] ;}
       }
         
     ### END OF LOOP OVER POINTS ALONG LEG
