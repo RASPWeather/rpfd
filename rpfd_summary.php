@@ -172,20 +172,20 @@ function CreateSummaryXML($sRegion)
     // ------------------------------------------------------------------------
     // Now create the XML file
     $sXML = "";
-    $sXML .= "<RPFD-Summary>";
-    $sXML .= "\n    <Run-Model>$sRegion</Run-Model>";
-    $sXML .= "\n    <Valid-Day>$sValidDay</Valid-Day>";
+    $sXML .= "<RPFDSummary>";
+    $sXML .= "\n    <RunModel>$sRegion</RunModel>";
+    $sXML .= "\n    <ValidDay>$sValidDay</ValidDay>";
     $sXML .= "\n    <Polar>$sGliderPolar </Polar>";
     
-    $sXML .= "\n    <Run-Started>$sStartString</Run-Started>";
-    $sXML .= "\n    <Run-Finished>$sFinishString</Run-Finished>";
-    $sXML .= "\n    <Run-Started-UNIX>$iUnixDTMStart</Run-Started-UNIX>";
-    $sXML .= "\n    <Run-Finished-UNIX>$iUnixDTMFinish</Run-Finished-UNIX>";
-    $sXML .= "\n    <Run-Time-Taken>$iSecsTaken</Run-Time-Taken>";
-    $sXML .= "\n    <Summary-Created>".date("Y-m-d H:i:s")."</Summary-Created>";
-    $sXML .= "\n    <Summary-Host>".gethostname()."</Summary-Host>";
+    $sXML .= "\n    <RunStarted>$sStartString</RunStarted>";
+    $sXML .= "\n    <RunFinished>$sFinishString</RunFinished>";
+    $sXML .= "\n    <RunStartedUNIX>$iUnixDTMStart</RunStartedUNIX>";
+    $sXML .= "\n    <RunFinishedUNIX>$iUnixDTMFinish</RunFinishedUNIX>";
+    $sXML .= "\n    <RunTimeTaken>$iSecsTaken</RunTimeTaken>";
+    $sXML .= "\n    <SummaryCreated>".date("Y-m-d H:i:s")."</SummaryCreated>";
+    $sXML .= "\n    <SummaryHost>".gethostname()."</SummaryHost>";
     
-    $sXML .= "\n</RPFD-Summary>";
+    $sXML .= "\n</RPFDSummary>";
     
     if ($bDebug) { echo "\n\n$sXML\n\n";}
     
