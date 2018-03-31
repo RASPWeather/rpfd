@@ -189,9 +189,14 @@ begin
   gsn_text_ndc(wks, env_glider,    0.912,0.025,txres) 
   gsn_text_ndc(wks, env_therm_pct, 0.866,0.04, txres) 
   gsn_text_ndc(wks, env_model_name,0.895,0.055,txres) 
+  
+  txres@txFontHeightF = 0.018
+  txres@txFontColor = "ForestGreen"
+  gsn_text_ndc(wks,env_validity + " 06:00-18:00",0.5, 0.930, txres)
+  
   txres@txFontHeightF = 0.012
-
-  gsn_text_ndc(wks,env_exec_time + "    " + env_validity + " 06:00-18:00",0.5, 0.930, txres) 
+  txres@txFontColor = "Blue"
+  gsn_text_ndc(wks,env_exec_time ,0.5, 0.01, txres) 
 
   ; Uncomment if you want to add a diagonal disclaimer
   ;txres@txFontHeightF = 0.04

@@ -196,9 +196,14 @@ begin
   gsn_text_ndc(wks, env_glider,  0.892,0.025,txres) 
   gsn_text_ndc(wks, env_therm_pct,0.846,0.04,txres) 
   gsn_text_ndc(wks, env_model_name,0.875,0.055,txres) 
-  txres@txFontHeightF = 0.012
 
-  gsn_text_ndc(wks,env_exec_time + "   " + env_validity + " 06:00-18:00",0.5, 0.930, txres) 
+  txres@txFontHeightF = 0.018
+  txres@txFontColor = "ForestGreen"
+  gsn_text_ndc(wks,env_validity + " 06:00-18:00",0.5, 0.930, txres)
+  
+  txres@txFontHeightF = 0.012
+  txres@txFontColor = "Blue"
+  gsn_text_ndc(wks,env_exec_time ,0.5, 0.01, txres) 
 
   txres@txFontHeightF = 0.04
   txres@txFontColor = 3
