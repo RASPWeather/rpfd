@@ -6,6 +6,7 @@
 	rm -f /tmp/raspstarttime.out.*
     echo "***********************************************"
 
+    PHP_EXE=/usr/bin/php
 # Set the first parameter to lowercase
 INPUT_1=${1,,}
 
@@ -157,6 +158,7 @@ esac
  	echo "Target directory:          $TARGET_DIR"
  	echo "Output polygon file:       $SOURCE_POLY"
  	echo "Task type:                 $EPOLYTYPE"
+ 	echo "PHP Executable used:       $PHP_EXE"
 	echo "***********************************************"
 #---------------------------------------------------------------
 
@@ -175,7 +177,7 @@ esac
 	# delete any progress file ...
 	rm -f $HOME/progress.txt
 	# now run it ...
-	/usr/bin/php $HOME/rpfd5.php $REGION > $OUTPUTLOGFILE 2> $OUTPUTERRFILE
+	$PHP_EXE $HOME/rpfd5.php $REGION > $OUTPUTLOGFILE 2> $OUTPUTERRFILE
 	
 	# copy to final location	
 	if [ -f $OUTPUTFILE ]
@@ -196,6 +198,9 @@ esac
 
 	echo "About to run: $HOME/plot_rpfd_poly.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY $EPOLYTYPE"
 	$HOME/plot_rpfd_poly.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY $EPOLYTYPE
-	
+
+    echo "About to run: $PHP_EXE $HOME/rpfd_summary.php $REGION"
+	$PHP_EXE $HOME/rpfd_summary.php $REGION
+
 	
 #---------------------------------------------------------------
