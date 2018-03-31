@@ -34,42 +34,49 @@ REGION=$INPUT_1
 case $INPUT_1 in
    uk12)
         DAYNAME=Today
+        DAYNAME_SHORT=`(set \`date +%a\`;echo $1)`
     	DAY=`(set \`date +%d\`;echo $1)`
     	YEAR=`(set \`date +%Y\`;echo $1)`
     	MONTH=`(set \`date +%m\`;echo $1)` # use %m for numeric
       ;;
    uk12+1)
         DAYNAME=Tomorrow
+        DAYNAME_SHORT=`(set \`date -d 'tomorrow' +%a\`;echo $1)`
     	DAY=`(set \`date -d 'tomorrow' +%d\`;echo $1)`
     	YEAR=`(set \`date  -d 'tomorrow' +%Y\`;echo $1)`
     	MONTH=`(set \`date  -d 'tomorrow' +%m\`;echo $1)`
       ;;
    uk12+2)
     	DAYNAME=+2
+    	DAYNAME_SHORT=`(set \`date -d '+2 days' +%a\`;echo $1)`
     	DAY=`(set \`date -d '+2 days' +%d\`;echo $1)`
     	YEAR=`(set \`date  -d '+2 days' +%Y\`;echo $1)`
     	MONTH=`(set \`date  -d '+2 days' +%m\`;echo $1)`
       ;;
    uk12+3)
         DAYNAME=+3
+        DAYNAME_SHORT=`(set \`date -d '+3 days' +%a\`;echo $1)`
     	DAY=`(set \`date -d '+3 days' +%d\`;echo $1)`
     	YEAR=`(set \`date  -d '+3 days' +%Y\`;echo $1)`
     	MONTH=`(set \`date  -d '+3 days' +%m\`;echo $1)`
       ;;
    uk12+4)
     	DAYNAME=+4
+    	DAYNAME_SHORT=`(set \`date -d '+4 days' +%a\`;echo $1)`
     	DAY=`(set \`date -d '+4 days' +%d\`;echo $1)`
     	YEAR=`(set \`date  -d '+4 days' +%Y\`;echo $1)`
     	MONTH=`(set \`date  -d '+4 days' +%m\`;echo $1)`
       ;;
    uk12+5)
     	DAYNAME=+5
+    	DAYNAME_SHORT=`(set \`date -d '+5 days' +%a\`;echo $1)`
     	DAY=`(set \`date -d '+5 days' +%d\`;echo $1)`
     	YEAR=`(set \`date  -d '+5 days' +%Y\`;echo $1)`
     	MONTH=`(set \`date  -d '+5 days' +%m\`;echo $1)`
       ;;
    uk12+6)
     	DAYNAME=+6
+    	DAYNAME_SHORT=`(set \`date -d '+6 days' +%a\`;echo $1)`
     	DAY=`(set \`date -d '+6 days' +%d\`;echo $1)`
     	YEAR=`(set \`date  -d '+6 days' +%Y\`;echo $1)`
     	MONTH=`(set \`date  -d '+6 days' +%m\`;echo $1)`
@@ -77,6 +84,7 @@ case $INPUT_1 in
    *)
 	# just default to today
     	DAYNAME=Today
+    	DAYNAME_SHORT=`(set \`date +%a\`;echo $1)`
     	DAY=`(set \`date +%d\`;echo $1)`
     	YEAR=`(set \`date +%Y\`;echo $1)`
     	MONTH=`(set \`date +%m\`;echo $1)`
@@ -92,7 +100,7 @@ esac
     NOW=`(set \`date\`;echo $4)`
     FULL=$(date)
     TODAY=$YEAR-$MONTH-$DAY-$NOW
-    TODAYSUFFIX=$DAY-$MONTH-$YEAR
+    TODAYSUFFIX=$DAYNAME_SHORT-$DAY-$MONTH-$YEAR
 
     # this is the filename only - not full path
     OUTPUT_PREFIX=rpfd
