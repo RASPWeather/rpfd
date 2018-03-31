@@ -148,47 +148,38 @@ function CreateSummaryXML($sRegion)
     if (file_exists($gsInputCSVFile) == FALSE)
     {
         LogMsg("Failed to open in the CSV file: ".$gsInputCSVFile);
-        return -1;
-    }
+        LogMsg("Creating an empty XML summary file.");
+        $sXML = CreateXMLFile($sRegion, "", "None", $sStartString, $sFinishString, $iUnixDTMStart, $iUnixDTMFinish, $iSecsTaken);
+        
+    } else { // we found a file ...
 
-    $aCSVFile = file($gsInputCSVFile);
-    if (count($aCSVFile )< 2)
-    {
-        LogMsg("CSV file empty - possibly an error or no data for that day. Rows found: ".count($aCSVFile ));
-        return -1;
+        $aCSVFile = file($gsInputCSVFile);
+        if (count($aCSVFile )< 2) // too small
+        {
+            LogMsg("CSV file empty - possibly an error or no data for that day. Rows found: ".count($aCSVFile ));
+            LogMsg("Creating an empty XML file");
+            $sXML = CreateXMLFile($sRegion, "", "None", $sStartString, $sFinishString, $iUnixDTMStart, $iUnixDTMFinish, $iSecsTaken);
+            
+        } else { // all good ...
+            // Ouptut row looks like:
+                // BRT-100-45-2of6-BRT_Burnford_Common,,50.588 -4.162|50.877 -4.039|50.665 -3.705|50.588 -4.162,101,45,54,1300-1505,125,26,48,63,0,1,1.6,-2,1.6,SUCCESS,Tue Mar 27,Tue Mar 27 18:33:18 2018,UK12,Valid: CurrentDay  StartTime: 0700lst,d2 = 12000m,StdCirrus (L/D=36),WeightRatio: 1 DryWeight: 337 kg,WeightRatio: 1 DryWeight: 337 kg,1.0
+                
+            // assumed for now to be for only be for one glider, model
+            $aEntry = explode(",",$aCSVFile[0]);
+                
+            // we want column 17 for the day forecasted
+            $sValidDay = $aEntry[17];
+            
+            // we want column 22 for the Polar used
+            $sGliderPolar = $aEntry[22];
+            
+            // ------------------------------------------------------------------------
+            // Now create the XML file
+            $sXML = CreateXMLFile($sRegion, $sValidDay,$sGliderPolar, $sStartString, $sFinishString, $iUnixDTMStart, $iUnixDTMFinish, $iSecsTaken);
+        }
     }
-    // Ouptut row looks like:
-        // BRT-100-45-2of6-BRT_Burnford_Common,,50.588 -4.162|50.877 -4.039|50.665 -3.705|50.588 -4.162,101,45,54,1300-1505,125,26,48,63,0,1,1.6,-2,1.6,SUCCESS,Tue Mar 27,Tue Mar 27 18:33:18 2018,UK12,Valid: CurrentDay  StartTime: 0700lst,d2 = 12000m,StdCirrus (L/D=36),WeightRatio: 1 DryWeight: 337 kg,WeightRatio: 1 DryWeight: 337 kg,1.0
         
-    // assumed for now to be for only be for one glider, model
-    $aEntry = explode(",",$aCSVFile[0]);
-        
-    // we want column 17 for the day forecasted
-    $sValidDay = $aEntry[17];
-    
-    // we want column 22 for the Polar used
-    $sGliderPolar = $aEntry[22];
-    
-    // ------------------------------------------------------------------------
-    // Now create the XML file
-    $sXML = "";
-    $sXML .= "<RPFDSummary>";
-    $sXML .= "\n    <RunModel>$sRegion</RunModel>";
-    $sXML .= "\n    <ValidDay>$sValidDay</ValidDay>";
-    $sXML .= "\n    <Polar>$sGliderPolar </Polar>";
-    
-    $sXML .= "\n    <RunStarted>$sStartString</RunStarted>";
-    $sXML .= "\n    <RunFinished>$sFinishString</RunFinished>";
-    $sXML .= "\n    <RunStartedUNIX>$iUnixDTMStart</RunStartedUNIX>";
-    $sXML .= "\n    <RunFinishedUNIX>$iUnixDTMFinish</RunFinishedUNIX>";
-    $sXML .= "\n    <RunTimeTaken>$iSecsTaken</RunTimeTaken>";
-    $sXML .= "\n    <SummaryCreated>".date("Y-m-d H:i:s")."</SummaryCreated>";
-    $sXML .= "\n    <SummaryHost>".gethostname()."</SummaryHost>";
-    
-    $sXML .= "\n</RPFDSummary>";
-    
     if ($bDebug) { echo "\n\n$sXML\n\n";}
-    
     // now wite the summary out
     // Write the contents back to the file
     $iResult = file_put_contents($gsOutputFile, $sXML);
@@ -200,6 +191,59 @@ function CreateSummaryXML($sRegion)
         LogMsg("Failed to write output to: ".$gsOutputFile);
         return -1;
     }
+}
+// ----------------------------------------------------------------------------
+function CreateXMLFile($sRegion, $sValidDay,$sGliderPolar, $sStartString, $sFinishString, $iUnixDTMStart, $iUnixDTMFinish, $iSecsTaken)
+{
+    // fix in case we don;t have one and have a model name instead
+    // we will assume that the run date/time we are doing it makes sense
+    if ($sValidDay == ""){
+        $sTest = strtolower($sRegion);
+        switch ( $sTest )
+        {
+            case "uk12":
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d"), date("Y")));
+                break;
+            case "uk12+1":
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y")));
+                break;
+            case "uk12+2":
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d")+2, date("Y")));
+                break;
+            case "uk12+3":
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d")+3, date("Y")));
+                break;
+            case "uk12+4":
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d")+4, date("Y")));
+                break;
+            case "uk12+5":
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d")+5, date("Y")));
+                break;
+            case "uk12+6":
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d")+6, date("Y")));
+                break;
+            default:
+                $sValidDay = date("D M j", mktime(0, 0, 0, date("m")  , date("d"), date("Y")));
+                LogMsg("No valid day and region $sTest not in tests. Check input model?");
+                break;
+        }
+    }
+    $sXML = "<RPFDSummary>";
+    $sXML .= "\n    <RunModel>$sRegion</RunModel>";
+    $sXML .= "\n    <ValidDay>$sValidDay</ValidDay>"; // this is normally like Fri MMM 99
+    $sXML .= "\n    <Polar>$sGliderPolar</Polar>";
+    
+    $sXML .= "\n    <RunStarted>$sStartString</RunStarted>";
+    $sXML .= "\n    <RunFinished>$sFinishString</RunFinished>";
+    $sXML .= "\n    <RunStartedUNIX>$iUnixDTMStart</RunStartedUNIX>";
+    $sXML .= "\n    <RunFinishedUNIX>$iUnixDTMFinish</RunFinishedUNIX>";
+    $sXML .= "\n    <RunTimeTaken>$iSecsTaken</RunTimeTaken>";
+    $sXML .= "\n    <SummaryCreated>".date("Y-m-d H:i:s")."</SummaryCreated>";
+    $sXML .= "\n    <SummaryHost>".gethostname()."</SummaryHost>";
+    
+    $sXML .= "\n</RPFDSummary>";
+    
+    return $sXML; 
 }
 // ----------------------------------------------------------------------------
 // Simply echo to the conaole wit ha date/time stamp
