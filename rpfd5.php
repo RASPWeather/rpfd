@@ -48,6 +48,7 @@
 	$iCalcsSoFar = 0;
 	$iTimeLeft = "a quite few ";
 	$iTimeLeftMins = "some";
+	$sFutureTime = "fairly soon";
     
     // ---------------------------------------------------------------------------------------------------
 	if ($bDebug) { $sValues = ""; foreach ($aDistanceIncrements as $key=>$value) { $sValues .= $value." "; } LogMsg("Debug: Increments=$sValues"); }
@@ -87,8 +88,19 @@
 		$fInputLat = chop($aLocation[2]);
 		$fInputLon = chop($aLocation[3]);
 		$iPercent = sprintf("%d",($iLocationsCount/count($aLocationsFile)*100));
+		
 
-		LogProgress( "At ".$sName." [".$fInputLat.",".$fInputLon."] ".$iLocationsCount." of ".count($aLocationsFile). " (".$iPercent."%) ETA in ".$iTimeLeft." secs ($iTimeLeftMins mins)" );
+        if ($iTimeLeft <60) {
+            $sLogMessage = "At ".$sName." [".$fInputLat.",".$fInputLon."] ".$iLocationsCount." of ".count($aLocationsFile). " (".$iPercent."%) ETA ";
+            if ($iTimeLeft <0) { // have gone negative - this can happen if later calculations are above average
+                LogProgress( "$sLogMessage shortly - slightly overrunning ($iTimeLeftMins mins) $sFutureTime" );
+            } else {
+                LogProgress( "$sLogMessage in ".$iTimeLeft." secs ($iTimeLeftMins mins) $sFutureTime" );
+            }
+        } else { 
+            LogProgress( "$sLogMessage in ".$iTimeLeft." secs ($iTimeLeftMins mins) $sFutureTime" );
+        }
+		
 		
 		$iStartTime = time();
 
@@ -199,7 +211,11 @@
 		
 		$sLogMsg = "Average Location Processing time so far: $iAverageLocationTime secs. With the last location: $iTimeTaken secs.";
 		if ($iTimeLeft <60) {
-            $sLogMsg = $sLogMsg." ETA in less than a minute at $sFutureTime";
+            if ($iTimeLeft <0){
+                $sLogMsg = $sLogMsg." ETA should be in a minute or two (some have gone above average) at $sFutureTime";
+            } else {
+                $sLogMsg = $sLogMsg." ETA in less than a minute at $sFutureTime";
+            }
         } else { 
             $sLogMsg = $sLogMsg." ETA in: $iTimeLeft secs ($iTimeLeftMins min or $sFutureTime)";
         }
@@ -214,7 +230,7 @@
 	}
 
     $iAverageLocationTime = $iTimeSoFar / $iLocationsCount;
-	LogMsg ("Average Location Processing time was ".$iAverageLocationTime."s");
+	LogMsg ("Average Location Processing time was ".round($iAverageLocationTime)."s");
 	LogMsg ("Finished getting results.");
 
 	file_put_contents($sResultsFilename,$sResults);
