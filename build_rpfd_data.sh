@@ -176,7 +176,7 @@
  	echo "PHP Executable used:         $PHP_EXE"
  	echo "NCL contour plot markers:    $EPLOTMARKERS"
  	echo "NCL plot polygon markers:    $EPLOTPOLYMARKERS"
- 	echo "Total sites to be processed: $TOTAL_SITES
+ 	echo "Total sites to be processed: $TOTAL_SITES"
 	echo "***********************************************"
 #---------------------------------------------------------------
 
