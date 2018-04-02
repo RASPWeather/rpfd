@@ -20,7 +20,7 @@
 	### not used - DH 2018-1-21 { $BASEDIR = '/home/rasp' ;  }
 
 	### SET EXTERNAL SCRIPT WHICH OUTPUTS RESULT IN TEXT FORMAT
-	$EXTRACTSCRIPT = "/home/rasp3/build/maxdist.0.4/maxdistraspstarttimexml.PL";
+	$EXTRACTSCRIPT = "/home/rasp3/build/rpfd/maxdistraspstarttimexml.PL";
 
 ################################################################################
 
