@@ -328,7 +328,6 @@ function LoadInputParameters()
 			LogMsg("The results poly file is not set. Set in section 'results_poly_file_name' in the INI file and rerun.");
 			exit( 1 );
 	}
-
 	
 	LogMsg("Loaded INI file without errors.");
 

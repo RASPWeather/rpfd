@@ -2,9 +2,6 @@
 	# rpfd5.php
 	date_default_timezone_set('Europe/London');
 
-	// pull in the utilities ... don't use any though until we have parsed the INI file
-	require_once "rpfd_utils.php";
-
 	// set various things to zero or empty
 	$gsRegion= "";
     $gsTaskType = "";
@@ -23,7 +20,11 @@
     $gsTaskType = "";
     $gsProgressTextFile = "";
     $gsPolyResultsFilename = "";
-	
+    $gbNCLPlotMarkers = TRUE;
+
+	// pull in the utilities ... don't use any though until we have parsed the INI file
+	require_once "rpfd_utils.php";
+    
     // the filename the configurable settings come from
 	$gIniFileName = "rpfd.ini";
 	// read in things from the INI file ...

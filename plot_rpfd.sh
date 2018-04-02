@@ -6,6 +6,10 @@
 #-------------------------------------------------------
 NOW=$(date)
 printf "******\n$0 started at $NOW\n******\n"
+    #where all the pre-processing is done ...
+    # 	Note assumes running in the same folder
+    HOME=$(/usr/bin/php /home/rasp3/build/rpfd/get_ini.php home_folder)
+
 # Inputs
 #   $1 as the input date label
 #   $2 as the data input file from last stage as full path
@@ -84,25 +88,38 @@ fi
 #-------------------------------------------------------
 # set env vars 
 # update this to match your environment
-#where all the pre-processing is done ...
-# 	Note assumes running in the same folder
-HOME=$(/usr/bin/php /home/rasp3/build/maxdist.0.4/get_ini.php home_folder)
-# where the root of the processing is
+#-------------------------------------------------------
+    # where all the pre-processing is done ...
+    # 	Note assumes running in the same folder
+    HOME=$(/usr/bin/php /home/rasp3/build/rpfd/get_ini.php home_folder)
+    # where the root of the processing is
 
-# NCL home
-NCLHOME=/home/rasp3/build/ncl
+    # location markers on or off
+    EPLOTMARKERS=$(/usr/bin/php $HOME/get_ini.php ncl_plot_location_makers)
+    export ENV_PLOT_MARKERS=$EPLOTMARKERS
 
-RPFD_NCL_SCRIPT=$HOME/plot_rpfd.ncl
+    # NCL home
+    NCLHOME=/home/rasp3/build/ncl
+    
+    RPFD_NCL_SCRIPT=$HOME/plot_rpfd.ncl
+    export RPFD_NCL_OUTPUT_NAME=rpfd.$ENV_MODEL_NAME
+    
+    RPFD_NCL_SCRIPT_LOGFILE=$HOME/OUT/$RPFD_NCL_OUTPUT_NAME.plot.err.log
+    export RPFD_NCL_OUTPUT_FILE=$HOME/OUT/$RPFD_NCL_OUTPUT_NAME
+    
+    SITES_FILE=$(/usr/bin/php $HOME/get_ini.php locations_file)
+    export RPFD_TOTAL_SITES_NUM=$(/usr/bin/wc $SITES_FILE | cut -d' ' -f2)
 
-export RPFD_NCL_OUTPUT_NAME=rpfd.$ENV_MODEL_NAME
-printf "\nUsing this file name=$RPFD_NCL_OUTPUT_NAME"
+    printf "\nEnvironment HOME:                     $HOME"
+    printf "\nNCLHOME:                              $NCLHOME"
+    printf "\nRPFD_NCL_SCRIPT:                      $RPFD_NCL_SCRIPT"
+    printf "\nUsing this file name:                 $RPFD_NCL_OUTPUT_NAME"
+    printf "\nUsing this full script log file name: $RPFD_NCL_SCRIPT_LOGFILE"
+    printf "\nUsing this full output file name:     $RPFD_NCL_OUTPUT_FILE"
+    printf "\nUsing location count of:              $RPFD_TOTAL_SITES_NUM"
+    printf "\nUsing plot marker flag of:            $EPLOTMARKERS\n\n"
 
-RPFD_NCL_SCRIPT_LOGFILE=$HOME/OUT/$RPFD_NCL_OUTPUT_NAME.plot.err.log
-printf "\nUsing this full script log file name=$RPFD_NCL_SCRIPT_LOGFILE"
-
-export RPFD_NCL_OUTPUT_FILE=$HOME/OUT/$RPFD_NCL_OUTPUT_NAME
-printf "\nUsing this full output file name=$RPFD_NCL_OUTPUT_FILE\n\n"
-
+#-------------------------------------------------------
 # set env vars for ncl to run
 # update this to match your environment
 export LD_LIBRARY_PATH=/usr/lib64:$BASEDIR/lib
@@ -149,7 +166,8 @@ export ENV_NCL_INPUT_DATA_FILE=$TEMP_PLOT_DATA
 
 # now run the NCL script 
 #   -> this will create an output file as in the environment variable "RPFD_NCL_OUTPUT_NAME"
-RUN_RES="$($NCL_COMMAND $RPFD_NCL_SCRIPT rundate=$INPUTDATE) " # > $RPFD_NCL_SCRIPT_LOGFILE)"
+printf "\nAbout to: $NCL_COMMAND $RPFD_NCL_SCRIPT rundate=$INPUTDATE > $RPFD_NCL_SCRIPT_LOGFILE"
+$NCL_COMMAND $RPFD_NCL_SCRIPT rundate=$INPUTDATE > $RPFD_NCL_SCRIPT_LOGFILE
 
 if [ -e "$RPFD_NCL_OUTPUT_FILE.png" ]; then
     printf "\nOutput map created ... $RPFD_NCL_OUTPUT_FILE.png\n"
@@ -157,14 +175,10 @@ else
     # didn't get created ?
     printf "\nOutput map from NCL not created ... '$RPFD_NCL_OUTPUT_FILE.png' ... "
     printf "\n... have a look in the $RPFD_NCL_SCRIPT_LOGFILE?\n"
+    NOW=$(date)
+    printf "\n******\n$0 Abnormal finish at $NOW\n******\n"
     exit 1
 fi
-
-#if [ $RUN_RES <> "0" ]; then
-#    # problem with NCL_COMMAND
-#    printf "\nError of some kind with NCL - check the log files.\n"
-#    exit 1
-#fi
 
 echo "\nNCL script done ($RUN_RES)... now post processing ..."
 
