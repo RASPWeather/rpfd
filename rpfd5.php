@@ -49,7 +49,7 @@
 	$iCalcsSoFar = 0;
 	$iTimeLeft = "a quite few ";
 	$iTimeLeftMins = "some";
-	$sFutureTime = "fairly soon";
+	$sFutureTime = "";
     
     // ---------------------------------------------------------------------------------------------------
 	if ($bDebug) { $sValues = ""; foreach ($aDistanceIncrements as $key=>$value) { $sValues .= $value." "; } LogMsg("Debug: Increments=$sValues"); }
