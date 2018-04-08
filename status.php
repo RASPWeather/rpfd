@@ -25,6 +25,7 @@ function BuildMainContent()
     $FORM .= "<th align='center'>RPFD Task<br>Polygon Map</th>";
     //$FORM .= "<th>RPFD Log file</th>";
     //$FORM .= "<th>RPFD Log Error file</th></tr>";
+    $FORM .= "<th align='center'>XML Stats</th>";
     $FORM .= "<th align='center'>Progress Log</th>";
     $FORM .= "<th align='center'>Last Status</th>";
     $FORM .="</tr>";
@@ -53,7 +54,11 @@ function BuildMainContent()
         //$sTarget = $sLogURL."/rpfd.$sModel.log.err";
         //$FORM .= "<td><a href='$sTarget'>$sModel Error Log</a></td>";
 
-        /// Progress ...
+        // XML ...
+        $sTarget = $sOutURL."/$sModel.run.summary.xml";
+        $FORM .= "<td align='center'><a href='$sTarget'>$sModel</a></td>";
+        
+        // Progress ...
         // http://mrsap.org/rasp/rpfd/OUT/progress.uk12.txt
         $sTarget = $sOutURL."/progress.$sModel.txt";
         $FORM .= "<td align='center'><a href='$sTarget'>$sModel</a></td>";

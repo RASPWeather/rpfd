@@ -90,9 +90,8 @@
 		$fInputLon = chop($aLocation[3]);
 		$iPercent = sprintf("%d",($iLocationsCount/count($aLocationsFile)*100));
 		
-
+        $sLogMessage = "At ".$sName." [".$fInputLat.",".$fInputLon."] ".$iLocationsCount." of ".count($aLocationsFile). " (".$iPercent."%) ETA ";
         if ($iTimeLeft <60) {
-            $sLogMessage = "At ".$sName." [".$fInputLat.",".$fInputLon."] ".$iLocationsCount." of ".count($aLocationsFile). " (".$iPercent."%) ETA ";
             if ($iTimeLeft <0) { // have gone negative - this can happen if later calculations are above average
                 LogProgress( "$sLogMessage shortly - slightly overrunning ($iTimeLeftMins mins) $sFutureTime" );
             } else {
