@@ -1,10 +1,16 @@
 #!/bin/bash
+LogMsg() 
+{
+    MSG=$1
+    NOW=$(date +%F-%T)
+    echo "$NOW: $MSG"
+}
 
 	# Empty the /tmp folder of any intermediate files, just in case
-    echo "***********************************************"
+    LogMsg "***********************************************"
 	echo "Emptying /tmp of temporary calculation files"
 	rm -f /tmp/raspstarttime.out.*
-    echo "***********************************************"
+    LogMsg "***********************************************"
 
     PHP_EXE=/usr/bin/php
 
@@ -109,20 +115,20 @@
     
 	ELOG=$(/usr/bin/php $HOME/get_ini.php log_folder)
 	# lets check it exists and if not create it
-	echo "Looking for output folder ...$HOME/$ELOG"
+	LogMsg "Looking for output folder ...$HOME/$ELOG"
 	if [ -e $HOME/$ELOG ]; then
-        echo "Found output folder ...$HOME/$ELOG"
+        LogMsg "Found output folder ...$HOME/$ELOG"
 	else
-		echo "Creating the log file folder ..."
+		LogMsg "Creating the log file folder ..."
 		mkdir $HOME/$ELOG
 	fi
 	EOUT=$(/usr/bin/php $HOME/get_ini.php output_folder)
-	echo "Looking for output folder ...$HOME/$EOUT"
+	LogMsg "Looking for output folder ...$HOME/$EOUT"
 	# lets check it exists and if not create it
 	if [ -e $HOME/$EOUT ]; then
-        echo "Found output folder ...$HOME/$EOUT"
+        LogMsg "Found output folder ...$HOME/$EOUT"
 	else
-		echo "Creating the output folder ..."
+		LogMsg "Creating the output folder ..."
 		mkdir $HOME/$EOUT
 	fi
 	
@@ -158,26 +164,26 @@
     TOTAL_SITES=$(/usr/bin/wc $SITES_FILE | cut -d' ' -f2)
 	
     #---------------------------------------------------------------
-    echo "***********************************************"
-	echo "Using region:                $REGION"
-	echo "Using day:                   $DAY"
-	echo "Valid day string:            $TODAYSUFFIX"	
-	echo "Using general filename of:   $OUTPUTNAME"
-	echo "Using log filename:          $OUTPUTLOGFILE"
-	echo "Using results file:          $OUTPUT_RESULTS_FILE"
-	echo "Using source locations:      $SOURCE_LOCATIONS_FILE"
-	echo "Using output error file:     $OUTPUTERRFILE"
-	echo "Using glider therm %:        $INPUT_GLIDER_THERM_PCT"
- 	echo "Using glider POLAR:          $INPUT_GLIDER_POLAR"
- 	echo "Using boundary data:         $SOURCE_BOUNDARY"
- 	echo "Target directory:            $TARGET_DIR"
- 	echo "Output polygon file:         $SOURCE_POLY"
- 	echo "Task type:                   $EPOLYTYPE"
- 	echo "PHP Executable used:         $PHP_EXE"
- 	echo "NCL contour plot markers:    $EPLOTMARKERS"
- 	echo "NCL plot polygon markers:    $EPLOTPOLYMARKERS"
- 	echo "Total sites to be processed: $TOTAL_SITES"
-	echo "***********************************************"
+    LogMsg "***********************************************"
+	LogMsg "Using region:                $REGION"
+	LogMsg "Using day:                   $DAY"
+	LogMsg "Valid day string:            $TODAYSUFFIX"	
+	LogMsg "Using general filename of:   $OUTPUTNAME"
+	LogMsg "Using log filename:          $OUTPUTLOGFILE"
+	LogMsg "Using results file:          $OUTPUT_RESULTS_FILE"
+	LogMsg "Using source locations:      $SOURCE_LOCATIONS_FILE"
+	LogMsg "Using output error file:     $OUTPUTERRFILE"
+	LogMsg "Using glider therm %:        $INPUT_GLIDER_THERM_PCT"
+ 	LogMsg "Using glider POLAR:          $INPUT_GLIDER_POLAR"
+ 	LogMsg "Using boundary data:         $SOURCE_BOUNDARY"
+ 	LogMsg "Target directory:            $TARGET_DIR"
+ 	LogMsg "Output polygon file:         $SOURCE_POLY"
+ 	LogMsg "Task type:                   $EPOLYTYPE"
+ 	LogMsg "PHP Executable used:         $PHP_EXE"
+ 	LogMsg "NCL contour plot markers:    $EPLOTMARKERS"
+ 	LogMsg "NCL plot polygon markers:    $EPLOTPOLYMARKERS"
+ 	LogMsg "Total sites to be processed: $TOTAL_SITES"
+	LogMsg "***********************************************"
 #---------------------------------------------------------------
 
 	# save last run output files
@@ -190,7 +196,7 @@
 		mv -f $OUTPUTERRFILE $OUTPUTERRFILE.old
 	fi
 	
-	echo "About to run /usr/bin/php $HOME/rpfd5.php $REGION > $OUTPUTLOGFILE 2> $OUTPUTERRFILE"
+	LogMsg "About to run /usr/bin/php $HOME/rpfd5.php $REGION > $OUTPUTLOGFILE 2> $OUTPUTERRFILE"
 	
 	# delete any progress file ...
 	rm -f $HOME/progress.txt
@@ -207,13 +213,13 @@
         cp -f $OUTPUTERRFILE $TARGET_DIR
     fi
 
-	echo "About to run: $HOME/plot_rpfd.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY"
+	LogMsg "About to run: $HOME/plot_rpfd.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY"
 	$HOME/plot_rpfd.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY $EPOLYTYPE
 
-	echo "About to run: $HOME/plot_rpfd_poly.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY $EPOLYTYPE"
+	LogMsg "About to run: $HOME/plot_rpfd_poly.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY $EPOLYTYPE"
 	$HOME/plot_rpfd_poly.sh $TODAYSUFFIX $OUTPUT_RESULTS_FILE $REGION $INPUT_GLIDER_THERM_PCT $INPUT_GLIDER_POLAR $SOURCE_POLY $EPOLYTYPE
 
-    echo "About to run: $PHP_EXE $HOME/rpfd_summary.php $REGION"
+    LogMsg "About to run: $PHP_EXE $HOME/rpfd_summary.php $REGION"
 	$PHP_EXE $HOME/rpfd_summary.php $REGION
 
 	
