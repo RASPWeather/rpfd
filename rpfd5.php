@@ -70,6 +70,19 @@
 
 	// when running from the shell command line:
 	// ./get_xmlraspstarttime.cgi region=uk12 latlons=52.169733,0.8752166,52.10645,0.7914,52.169733,0.8752166 day=0 time=1200%2b polar=StdCirrus wgt=1 tsink=1.0 tmult=1 grid=d2 task=RAT.LVN.RAT
+	if (!is_array($aLocationsFile)){
+		LogMsg("The load of file: $aLocationsFile did not return as an array. Check the file.");
+		exit(-1);
+	}
+	if (!is_array($aDistanceIncrements)){
+		LogMsg("The directions aDistanceIncrements did not return as an array. Check the INI file.");
+		exit(-1);
+	}
+	if (!is_array($aVectorDirections)){
+		LogMsg("The vector directions $aVectorDirections did not return as an array. Check the INI file.");
+		exit(-1);
+	}
+	$aRegions = explode($gsRegion,","); 
 
 	$iTotalCalcs = count($aLocationsFile) * count($gsRegion) * count($aDistanceIncrements) * count($aVectorDirections);
 	LogMsg("Total possible calculations: ".$iTotalCalcs);
